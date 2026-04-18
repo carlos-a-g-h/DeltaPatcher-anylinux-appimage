@@ -9,7 +9,7 @@ ARCH=$(uname -m)
 VERSION="$(sed -n 1p sources.txt)"
 NAME="DeltaPatcher"
 
-APPIMAGE_STEM="$NAME"_"$VERSION"_"$GH_SHA_SHORT"_anylinux_"$ARCH"
+APPIMAGE_STEM="$NAME"_v"$VERSION"_"$GH_SHA_SHORT"_anylinux_"$ARCH"
 
 export ARCH VERSION
 export OUTPATH=./dist
