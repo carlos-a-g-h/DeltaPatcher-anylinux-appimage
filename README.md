@@ -16,7 +16,7 @@ The developer behind the Delta Patcher provides a Linux release as a zipped bina
 
 <details>
   <summary><b><i>IT RUNS ON THIS OLD-ASS DISTRO</i></b></summary>
-    <img width="1920" height="1080" alt="2026-01-06-154041_1920x1080_scrot" src="https://github.com/user-attachments/assets/e7be88ab-fd07-413b-9c31-5525f1798617" />
+    <img width="1920" height="1080" alt="DeltaPatcher_tests" src="https://github.com/user-attachments/assets/f6fbf1f8-84c9-4c67-8955-917165846af7" />
     <strong><i>System: Debian 11, libc6 2.31</i></strong>
 </details>
 
