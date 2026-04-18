@@ -6,11 +6,17 @@ ARCH=$(uname -m)
 
 VERSION="$(sed -n 1p sources.txt)"
 
-# [Source] Upstream
+# [source.txt] Upstream release
 URL_UPSTREAM=$(awk "/DeltaPatcher/ && /$VERSION/ && /$ARCH/" sources.txt)
 
-# [Source] Icon
+# [source.txt] Icon
 URL_ICON=$(awk "/DeltaPatcher/ && /graphics/" sources.txt)
+
+# [Anylinux] Debloated packages script
+URL_DPKG="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/get-debloated-pkgs.sh"
+
+# [Anylinux] Quick sharun script
+URL_SHARUN="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/quick-sharun.sh"
 
 if [ -z "$URL_UPSTREAM" ]
 then
@@ -19,37 +25,46 @@ then
 fi
 
 # Debloated packages script
-URL="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/get-debloated-pkgs.sh"
 FILENAME="get-debloated-pkgs"
-wget "$URL" -O "$FILENAME"
+wget "$URL_DPKG" -O "$FILENAME"
 chmod +x "$FILENAME"
 
 # Quick Sharun script
-URL="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/quick-sharun.sh"
 FILENAME="quick-sharun"
-wget "$URL" -O "$FILENAME"
+wget "$URL_SHARUN" -O "$FILENAME"
 chmod +x "$FILENAME"
 
-# The Icon
+# Create the Details directory
+mkdir -p AppDir/_details
+echo "" > AppDir/_details/chk.md5.txt
+
+# The Icon from the repo
 mkdir -p "upstream"
 FILENAME="upstream/DeltaPatcher.png"
 wget "$URL_ICON" -O "$FILENAME"
+md5sum "$FILENAME" >> AppDir/_details/chk.md5.txt
 
 # The release from upstream
 FILENAME="DeltaPatcher.zip"
 wget "$URL_UPSTREAM" -O "$FILENAME"
-
+md5sum "$FILENAME" >> AppDir/_details/chk.md5.txt
 
 # Install unzip if it's not installed
 pacman -Sy --noconfirm \
 unzip
 
+# Extract the contents from upstream
 mkdir -p upstream
 unzip "$FILENAME" -d upstream
 
-bash get-debloated-pkgs mesa-mini gtk3-mini gdk-pixbuf2-mini
+# Move the official changelog to AppDir/_details
+mv -v upstream/CHANGELOG.txt AppDir/_details/
 
+# Install basic pacakges
 pacman -Sy --noconfirm \
+gcc \
 zsync zstd patchelf base-devel xorg-server-xvfb \
 systemd-libs libepoxy freetype2 fribidi
 
+# Install debloated packages
+bash get-debloated-pkgs mesa-mini gtk3-mini gdk-pixbuf2-mini

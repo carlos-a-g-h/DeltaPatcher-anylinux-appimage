@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Delta Patcher
+GenericName=XDelta Patching Utility
+GenericName[es]=Utilidad de parches XDelta
+Comment=Applies and creates patches in XDelta format
+Comment[es]=Aplica y crea parches en el formato XDelta
+Icon=DeltaPatcher
+TryExec=DeltaPatcher
+Exec=DeltaPatcher %f
+Categories=Utility;
