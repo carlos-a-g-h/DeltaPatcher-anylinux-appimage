@@ -16,7 +16,7 @@ on:
   workflow_dispatch:
     inputs:
       switch_release:
-        description: 'Disable release'
+        description: 'Disable release job'
         required: false
         default: false
         type: boolean
