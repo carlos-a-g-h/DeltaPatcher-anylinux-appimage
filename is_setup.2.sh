@@ -47,7 +47,6 @@ MAKE_DESKTOP=1
 OVERWRITE=0
 declare -a ARGUMENTS=(
 	"--install"
-	# "--no-config"
 	"--no-links"
 	"--no-desktop"
 	"--force"
@@ -67,12 +66,6 @@ do
 		DET=1
 		INSTALL=1
 	fi
-
-	#if [ "$FLAG" == "--no-config" ]
-	#then
-	#	DET=1
-	#	COPY_CONFIG=0
-	#fi
 
 	if [ "$FLAG" == "--no-links" ]
 	then
@@ -222,56 +215,6 @@ then
 
 fi
 
-# Config (if the app has one)
-#if [ $COPY_CONFIG -eq 1 ] && [ -d "$APPDIR"/_config ]
-#then
-#
-#	AE=0
-#
-#	OK=0
-#
-#	if [ -f "$CONFIG_DIR" ] || [ -d "$CONFIG_DIR" ]
-#	then
-#
-#		AE=1
-#
-#		ls -l "$CONFIG_DIR"
-#
-#		if [ $OVERWRITE -eq 1 ]
-#		then
-#			OK=1
-#		else
-#			echo "$MSG_ERR Failed to copy config. $MSG_USE_FORCE"
-#		fi
-#
-#	else
-#		OK=1
-#	fi
-#
-#	if [ $OK -eq 1 ]
-#	then
-#		if [ $AE -eq 1 ] && [ $OVERWRITE -eq 1 ]
-#		then
-#			BACKUP="$CONFIG_DIR".backup
-#			if [ -e "$BACKUP" ]
-#			then
-#				echo "$MSG_NOT DELETING OLD BACKUP..."
-#				rm -vrf "$BACKUP"
-#			fi
-#			echo "$MSG_NOT CREATING A BACKUP OF THE CURRENT CONFIG..."
-#			mv -v "$CONFIG_DIR" "$CONFIG_DIR".backup
-#		fi
-#		mkdir -vp "$CONFIG_DIR"
-#		cp -va "$APPDIR"/_config/* "$CONFIG_DIR"/
-#
-#		# RUN EXTRA JOB(s)
-#
-#		# additional_config_tasks
-#
-#	fi
-#
-#fi
-
 echo "
 All done!"
 
@@ -289,9 +232,3 @@ then
 	echo "$MSG_NOT Created/updated the application file: $DESKTOP"
 	cat /usr/share/applications/"$DESKTOP"|grep "^Exec="
 fi
-
-#if [ $COPY_CONFIG -eq 1 ]
-#then
-#	echo "$MSG_NOT Copied the config"
-#	find "$CONFIG_DIR"
-#fi
