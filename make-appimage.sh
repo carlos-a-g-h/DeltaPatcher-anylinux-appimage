@@ -26,6 +26,12 @@ export OUTNAME="$APPIMAGE_STEM".AppImage
 # Deploy dependencies
 quick-sharun upstream/DeltaPatcher
 
+# Prepare the .desktop file
+sed -i \
+-e "s/VERSION_GOES_HERE/$VERSION/" \
+-e "s/ARCH_GOES_HERE/$ARCH/" \
+"$DESKTOP"
+
 # Fill in the details
 echo "$GH_SHA" > AppDir/_details/commit.txt
 echo "$(date)" > AppDir/_details/date.txt

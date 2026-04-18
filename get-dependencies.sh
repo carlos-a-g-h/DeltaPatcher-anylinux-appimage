@@ -36,18 +36,18 @@ chmod +x "$FILENAME"
 
 # Create the Details directory
 mkdir -p AppDir/_details
-echo "" > AppDir/_details/chk.md5.txt
+touch AppDir/_details/checksums.md5.txt
 
 # The Icon from the repo
 mkdir -p "upstream"
 FILENAME="upstream/DeltaPatcher.png"
 wget "$URL_ICON" -O "$FILENAME"
-md5sum "$FILENAME" >> AppDir/_details/chk.md5.txt
+md5sum "$FILENAME" >> AppDir/_details/checksums.md5.txt
 
 # The release from upstream
 FILENAME="DeltaPatcher.zip"
 wget "$URL_UPSTREAM" -O "$FILENAME"
-md5sum "$FILENAME" >> AppDir/_details/chk.md5.txt
+md5sum "$FILENAME" >> AppDir/_details/checksums.md5.txt
 
 # Install unzip if it's not installed
 pacman -Sy --noconfirm \
