@@ -45,10 +45,10 @@ jobs:
         uses: pkgforge-dev/anylinux-setup-action@8872fabe63f9a00b35e25b2f46da62a05afc9a7d # v1
 
       - name: Install Dependencies
-        run: ./get-dependencies.sh
+        run: bash ./get-dependencies.sh
 
       - name: Make AppImage
-        run: ./make-appimage.sh "${{ github.sha }}"
+        run: bash ./make-appimage.sh "${{ github.sha }}"
 
       - name: Upload artifact
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
