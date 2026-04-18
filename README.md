@@ -10,17 +10,17 @@
 
 ## About this AppImage
 
-[Delta Patcher, by Marco Calautti](https://github.com/marco-calautti/DeltaPatcher)
+This is an unofficial AppImage for [Delta Patcher](https://github.com/marco-calautti/DeltaPatcher)
 
-The developer behind the Delta Patcher provides a Linux release as a zipped binary and a Flatpak, but the developer does not provide any appimages
+The developer behind the Delta Patcher provides a Linux release as a zipped binary and a Flatpak, but does not provide any appimages. There is a script in their repository to build one, but most users in a hurry will want the blob sitting among the releases
 
 <details>
-  <summary><b><i>IT RUNS ON THIS OLD-ASS DISTRO</i></b></summary>
+  <summary><b><i>IT RUNS FINE</i></b></summary>
     <img width="1920" height="1080" alt="DeltaPatcher_tests" src="https://github.com/user-attachments/assets/f6fbf1f8-84c9-4c67-8955-917165846af7" />
     <strong><i>System: Debian 11, libc6 2.31</i></strong>
 </details>
 
-The AppImages being built in this repo are made using the zipped binaries from the release page
+The AppImage built and distributed by this repo is made using the zipped binary that is provided by DeltPatcher's official repository
 
 ### Internal scripts and programs
 
