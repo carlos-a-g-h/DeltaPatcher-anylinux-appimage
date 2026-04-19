@@ -12,15 +12,17 @@
 
 This is an unofficial AppImage for [Delta Patcher](https://github.com/marco-calautti/DeltaPatcher)
 
-The developer behind the Delta Patcher provides a Linux release as a zipped binary and a Flatpak, but does not provide any appimages. There is a script in their repository to build one, but most users in a hurry will want the blob sitting among the releases
+The developer behind the Delta Patcher provides a Linux release as a zipped binary, Delta Patcher is also available as a Flatpak, but the developer does not provide any appimages, so I made one myself
 
 <details>
   <summary><b><i>IT RUNS FINE</i></b></summary>
-    <img width="1920" height="1080" alt="DeltaPatcher_tests" src="https://github.com/user-attachments/assets/f6fbf1f8-84c9-4c67-8955-917165846af7" />
+    <img width="1920" height="1080" alt="DeltaPatcher_tests" src="https://raw.githubusercontent.com/carlos-a-g-h/DeltaPatcher-anylinux-appimage/refs/heads/the-code/DeltaPatcher_running_on_Debian11-libc6-2.31.png" />
     <strong><i>System: Debian 11, libc6 2.31</i></strong>
 </details>
 
-The AppImage built and distributed by this repo is made using the zipped binary that is provided by DeltPatcher's official repository
+The AppImage built and distributed by this repo is made using the zipped binary that is provided by the official repository
+
+This is not a traditional AppImage, this AppImage is built to run on any distro, including older distros, more details about this at the end of this README file
 
 ### Internal scripts and programs
 
