@@ -34,7 +34,8 @@ This AppImage has internal scripts that can be launched by calling them as comma
 
 This AppImage has internal scripts and programs that can be launched by calling them as commandline arguments
 
-|Program or script|Description|
+| Program or script | Description |
+|-|-|
 | setup | An "installation" script for the appimage. It provides a nice config, a DESKTOP file in /usr/share/applications and an icon |
 | details | Extracts the "details" directory from the AppImage |
 
