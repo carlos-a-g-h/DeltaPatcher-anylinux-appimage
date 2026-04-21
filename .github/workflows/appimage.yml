@@ -13,13 +13,13 @@ on:
   #schedule:
   #  - cron: "0 7 1/21 * *"
 
-  workflow_dispatch:
-    inputs:
-      switch_release:
-        description: 'Disable release job'
-        required: false
-        default: false
-        type: boolean
+  # workflow_dispatch:
+  #  inputs:
+  #    switch_release:
+  #      description: 'Disable release job'
+  #      required: false
+  #      default: false
+  #      type: boolean
 
 
 jobs:
@@ -57,7 +57,7 @@ jobs:
           path: dist
 
   release:
-    if: ${{ github.ref_name == 'main' && github.event.inputs.switch_release == 'false' }}
+    if: ${{ github.ref_name == 'main' }}
     needs: [build]
     permissions: write-all
     runs-on: ubuntu-latest
