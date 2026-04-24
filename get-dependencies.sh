@@ -37,25 +37,32 @@ chmod +x "$FILENAME"
 # Create the Details directory
 mkdir -p AppDir/_details
 touch AppDir/_details/checksums.md5.txt
+touch AppDir/_details/checksums.sha256.txt
 
-# The Icon from the repo
+# The Icon from the repo + Checksums
 mkdir -p "upstream"
 FILENAME="upstream/DeltaPatcher.png"
 wget "$URL_ICON" -O "$FILENAME"
 md5sum "$FILENAME" >> AppDir/_details/checksums.md5.txt
+sha256sum "$FILENAME" >> AppDir/_details/checksums.sha256.txt
 
-# The release from upstream
+# The release from upstream + Checksums
 FILENAME="DeltaPatcher.zip"
 wget "$URL_UPSTREAM" -O "$FILENAME"
 md5sum "$FILENAME" >> AppDir/_details/checksums.md5.txt
+sha256sum "$FILENAME" >> AppDir/_details/checksums.sha256.txt
 
 # Install unzip if it's not installed
 pacman -Sy --noconfirm \
 unzip
 
-# Extract the contents from upstream
+# Extract the contents from upstream + Checksums
 mkdir -p upstream
+FILENAME="DeltaPatcher.zip"
 unzip "$FILENAME" -d upstream
+FILENAME="upstream/DeltaPatcher"
+md5sum "$FILENAME" >> AppDir/_details/checksums.md5.txt
+sha256sum "$FILENAME" >> AppDir/_details/checksums.sha256.txt
 
 # Move the official changelog to AppDir/_details
 mv -v upstream/CHANGELOG.txt AppDir/_details/
