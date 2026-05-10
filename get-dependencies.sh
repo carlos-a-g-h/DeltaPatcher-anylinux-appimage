@@ -2,35 +2,38 @@
 
 set -eux
 
+# System architecture
 ARCH=$(uname -m)
 
+# [DeltaPatcher] Select version
 VERSION="$(sed -n 1p sources.txt)"
 
-# [source.txt] Upstream release
-URL_UPSTREAM=$(awk "/DeltaPatcher/ && /$VERSION/ && /$ARCH/" sources.txt)
+# [DeltaPatcher] Upstream release
+URL_UPSTREAM=$(awk "/https/ && /DeltaPatcher/ && /$VERSION/ && /$ARCH/" sources.txt)
 
-# [source.txt] Icon
-URL_ICON=$(awk "/DeltaPatcher/ && /graphics/" sources.txt)
+# [DeltaPatcher] Icon
+URL_ICON=$(awk "/https/ && /DeltaPatcher/ && /graphics/" sources.txt)
 
 # [Anylinux] Debloated packages script
-URL_DPKG="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/get-debloated-pkgs.sh"
+URL_DPKG=$(awk "/https/ && /get-debloated-pkgs.sh/" sources.txt)
 
 # [Anylinux] Quick sharun script
-URL_SHARUN="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/quick-sharun.sh"
+URL_SHARUN=$(awk "/https/ && /quick-sharun.sh/" sources.txt)
 
-if [ -z "$URL_UPSTREAM" ]
+# Check all URLs
+if [ -z "$URL_UPSTREAM" ] || [ -z "$URL_ICON" ] || [ -z "$URL_DPKG" ] || [ -z "$URL_SHARUN" ]
 then
-	echo "[!] URL_UPSTREAM not detected in the sources.txt file"
+	echo "[!] Some URLs were not detected in the sources.txt file"
 	exit 1
 fi
 
 # Debloated packages script
-FILENAME="get-debloated-pkgs"
+FILENAME="get-debloated-pkgs.sh"
 wget "$URL_DPKG" -O "$FILENAME"
 chmod +x "$FILENAME"
 
 # Quick Sharun script
-FILENAME="quick-sharun"
+FILENAME="quick-sharun.sh"
 wget "$URL_SHARUN" -O "$FILENAME"
 chmod +x "$FILENAME"
 
@@ -53,8 +56,7 @@ md5sum "$FILENAME" >> AppDir/_details/checksums.md5.txt
 sha256sum "$FILENAME" >> AppDir/_details/checksums.sha256.txt
 
 # Install unzip if it's not installed
-pacman -Sy --noconfirm \
-unzip
+pacman -Sy --noconfirm unzip
 
 # Extract the contents from upstream + Checksums
 mkdir -p upstream
@@ -69,9 +71,9 @@ mv -v upstream/CHANGELOG.txt AppDir/_details/
 
 # Install basic pacakges
 pacman -Sy --noconfirm \
-gcc \
-zsync zstd patchelf base-devel xorg-server-xvfb \
-systemd-libs libepoxy freetype2 fribidi
+	gcc squashfs-tools \
+	zsync zstd patchelf base-devel xorg-server-xvfb \
+	systemd-libs libepoxy freetype2 fribidi
 
 # Install debloated packages
-bash get-debloated-pkgs mesa-mini gtk3-mini gdk-pixbuf2-mini
+bash get-debloated-pkgs.sh mesa-mini gtk3-mini gdk-pixbuf2-mini
