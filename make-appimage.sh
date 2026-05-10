@@ -35,7 +35,7 @@ sed -i \
 # Fill in the details
 echo "$GH_SHA" > AppDir/_details/commit.txt
 echo "$(date)" > AppDir/_details/date.txt
-pacman -Q > AppDir/_details/packages.txt
+pacman -Q > AppDir/_details/system_packages.txt
 
 # Copy Internal scripts
 mkdir -vp AppDir/bin
@@ -47,3 +47,6 @@ chmod +x AppDir/bin/setup
 
 # Turn AppDir into AppImage
 quick-sharun --make-appimage
+
+# Turn AppDir into SQUASHFS
+mksquashfs AppDir "$APPIMAGE_STEM".AppImage.squashfs -comp xz
