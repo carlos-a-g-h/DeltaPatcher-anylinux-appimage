@@ -1,11 +1,13 @@
 #!/bin/bash
 
+# Installation script that uses the SQUASHFS variant
+
 set -eux
 
 NAME="$1"
 FILEPATH="$2"
 
-echo "Integrating: $NAME : $FILEPATH"
+echo "Installing: $NAME : $FILEPATH"
 
 FILE_ICON="DeltaPatcher.png"
 FILE_DESKTOP="DeltaPatcher.desktop"
