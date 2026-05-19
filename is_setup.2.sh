@@ -111,7 +111,7 @@ fi
 NO_AIMG=0
 if [ -z "$URUNTIME" ]
 then
-	"$MSG_NOT URUNTIME env var not found (?)"
+	echo "$MSG_NOT URUNTIME env var not found (?)"
 	NO_AIMG=1
 fi
 
