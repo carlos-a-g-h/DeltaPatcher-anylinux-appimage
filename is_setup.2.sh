@@ -147,7 +147,7 @@ then
 		if [ $NO_AIMG -eq 1 ]
 		then
 			BIN_NAME=$(basename "$BIN_LINK")
-			URUNTIME="$APPDIR"/bin/"$BNAME"
+			URUNTIME="$APPDIR"/bin/"$BIN_NAME"
 			echo "$MSG_NOT faking URUNTIME: $URUNTIME"
 		fi
 		ln -vrsf "$URUNTIME" "$BIN_LINK"
