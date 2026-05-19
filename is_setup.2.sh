@@ -11,10 +11,14 @@ Available flags/arguments
 	Integrates the AppImage with your system
 	By default it will try to do the following tasks:
 	- Create symlinks that lead to the appimage
+	- Copy a configuration to your home directory
 	- Create a dot DESKTOP application file that will run the appimage
 
 --no-links
 	Will not create symlinks that go from /usr/bin/ to the AppImage
+
+--no-config
+	Will not copy the recommended config during the installation
 
 --no-desktop
 	Will not create/update the application desktop file and its icon
@@ -47,6 +51,7 @@ MAKE_DESKTOP=1
 OVERWRITE=0
 declare -a ARGUMENTS=(
 	"--install"
+	"--no-config"
 	"--no-links"
 	"--no-desktop"
 	"--force"
@@ -65,6 +70,12 @@ do
 	then
 		DET=1
 		INSTALL=1
+	fi
+
+	if [ "$FLAG" == "--no-config" ]
+	then
+		DET=1
+		COPY_CONFIG=0
 	fi
 
 	if [ "$FLAG" == "--no-links" ]
@@ -91,10 +102,18 @@ do
 	fi
 done
 
-echo "
-$MSG_NOT AppImage path: $(realpath -e "$URUNTIME")
-$MSG_NOT Mounted path: $(realpath -e "$APPDIR")
-"
+if [ -z "$APPDIR" ]
+then
+	"$MSG_NOT APPDIR env var not found!"
+	exit 1
+fi
+
+NO_AIMG=0
+if [ -z "$URUNTIME" ]
+then
+	"$MSG_NOT URUNTIME env var not found (?)"
+	NO_AIMG=1
+fi
 
 if ! [ $INSTALL -eq 1 ]
 then
@@ -125,7 +144,13 @@ then
 
 		fi
 
-		ln -vsf "$URUNTIME" "$BIN_LINK"
+		if [ $NO_AIMG -eq 1 ]
+		then
+			BIN_NAME=$(basename "$BIN_LINK")
+			URUNTIME="$APPDIR"/bin/"$BNAME"
+			echo "$MSG_NOT faking URUNTIME: $URUNTIME"
+		fi
+		ln -vrsf "$URUNTIME" "$BIN_LINK"
 
 	done
 
@@ -196,6 +221,12 @@ then
 			if [ -f "$MAIN_BIN" ]
 			then
 
+				if [ $NO_AIMG -eq 1 ]
+				then
+					URUNTIME="$MAIN_BIN"
+					echo "$MSG_NOT faking URUNTIME: $URUNTIME"
+				fi
+
 				DESTINATION=$(readlink "$MAIN_BIN")
 				if ! [ "$DESTINATION" == "$URUNTIME" ]
 				then
@@ -210,6 +241,56 @@ then
 		then
 			sed -i 's:Exec='"$DESKTOP_EXEC"':Exec=\"'"$URUNTIME"'\":' "$DESKTOP_OK"
 		fi
+
+	fi
+
+fi
+
+# Config
+if [ $COPY_CONFIG -eq 1 ]
+then
+
+	AE=0
+
+	OK=0
+
+	if [ -f "$CONFIG_DIR" ] || [ -d "$CONFIG_DIR" ]
+	then
+
+		AE=1
+
+		ls -l "$CONFIG_DIR"
+
+		if [ $OVERWRITE -eq 1 ]
+		then
+			OK=1
+		else
+			echo "$MSG_ERR Failed to copy config. $MSG_USE_FORCE"
+		fi
+
+	else
+		OK=1
+	fi
+
+	if [ $OK -eq 1 ]
+	then
+		if [ $AE -eq 1 ] && [ $OVERWRITE -eq 1 ]
+		then
+			BACKUP="$CONFIG_DIR".backup
+			if [ -e "$BACKUP" ]
+			then
+				echo "$MSG_NOT DELETING OLD BACKUP..."
+				rm -vrf "$BACKUP"
+			fi
+			echo "$MSG_NOT CREATING A BACKUP OF THE CURRENT CONFIG..."
+			mv -v "$CONFIG_DIR" "$CONFIG_DIR".backup
+		fi
+		mkdir -vp "$CONFIG_DIR"
+		cp -va "$APPDIR"/_config/* "$CONFIG_DIR"/
+
+		# RUN EXTRA JOB(s)
+
+		additional_config_tasks
 
 	fi
 
@@ -231,4 +312,10 @@ if [ $MAKE_DESKTOP -eq 1 ]
 then
 	echo "$MSG_NOT Created/updated the application file: $DESKTOP"
 	cat /usr/share/applications/"$DESKTOP"|grep "^Exec="
+fi
+
+if [ $COPY_CONFIG -eq 1 ]
+then
+	echo "$MSG_NOT Copied the config"
+	find "$CONFIG_DIR"
 fi
